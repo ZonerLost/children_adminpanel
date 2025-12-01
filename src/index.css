@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: theme("fontFamily.body");
+    @apply antialiased text-slate-900 dark:text-slate-100;
+  }
+
+  h1 {
+    font-family: theme("fontFamily.heading");
+    @apply text-3xl font-bold sm:text-4xl;
+  }
+
+  h2 {
+    font-family: theme("fontFamily.heading");
+    @apply text-2xl font-semibold sm:text-3xl;
+  }
+
+  h3 {
+    font-family: theme("fontFamily.heading");
+    @apply text-xl font-semibold sm:text-2xl;
+  }
+}
