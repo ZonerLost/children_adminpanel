@@ -12,7 +12,7 @@ import AuthLayout from "../features/auth/AdminLoginPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/admin" replace />,
+    element: <Navigate to="/admin/users" replace />,
   },
   {
     path: "/login",
