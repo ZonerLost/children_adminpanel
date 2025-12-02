@@ -106,7 +106,7 @@ const CoinEconomyPage = () => {
     <section className="space-y-6">
       {/* Page header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 sm:text-3xl">
           Coin Economy &amp; Rewards Configuration
         </h1>
         <p className="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
@@ -190,7 +190,7 @@ const CoinEconomyPage = () => {
                 <div className="flex items-center justify-between text-[11px] font-medium">
                   <span>Global Coin Multiplier</span>
                   <span className="font-semibold">
-?{earningRules.globalMultiplier.toFixed(1)}
+                    x{earningRules.globalMultiplier.toFixed(1)}
                   </span>
                 </div>
                 <input
@@ -362,7 +362,7 @@ const CoinEconomyPage = () => {
                 <option>Exclusive Item</option>
               </select>
 
-              <div className="mt-2 grid grid-cols-2 gap-3">
+              <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className="block text-[11px] font-medium">
                     Start Date
@@ -543,50 +543,90 @@ const CoinEconomyPage = () => {
           title="Recent Reward Redemptions"
           subtitle="Overview of recent reward redemptions across the platform."
         >
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 text-[11px] dark:border-white/10 dark:bg-white/5">
-            <table className="min-w-full">
-              <thead className="bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300">
-                <tr>
-                  <th className="px-3 py-2 text-left font-semibold">
-                    Student
-                  </th>
-                  <th className="px-3 py-2 text-left font-semibold">
-                    Reward
-                  </th>
-                  <th className="px-3 py-2 text-left font-semibold">
-                    Coins
-                  </th>
-                  <th className="px-3 py-2 text-left font-semibold">Date</th>
-                  <th className="px-3 py-2 text-right font-semibold">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {RECENT_REDEMPTIONS.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="border-t border-slate-200 bg-white dark:border-white/5 dark:bg-transparent"
-                  >
-                    <td className="px-3 py-2">{row.student}</td>
-                    <td className="px-3 py-2">{row.reward}</td>
-                    <td className="px-3 py-2">{row.coins}</td>
-                    <td className="px-3 py-2">{row.date}</td>
-                    <td className="px-3 py-2 text-right">
-                      {row.status === "Completed" ? (
-                        <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-200">
-                          Completed
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center rounded-full bg-amber-500/10 px-3 py-1 text-[10px] font-semibold text-amber-600 dark:bg-amber-500/15 dark:text-amber-200">
-                          Pending
-                        </span>
-                      )}
-                    </td>
+          <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 text-[11px] dark:border-white/10 dark:bg-white/5 md:block">
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead className="bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300">
+                  <tr>
+                    <th className="px-3 py-2 text-left font-semibold">
+                      Student
+                    </th>
+                    <th className="px-3 py-2 text-left font-semibold">
+                      Reward
+                    </th>
+                    <th className="px-3 py-2 text-left font-semibold">
+                      Coins
+                    </th>
+                    <th className="px-3 py-2 text-left font-semibold">Date</th>
+                    <th className="px-3 py-2 text-right font-semibold">
+                      Status
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {RECENT_REDEMPTIONS.map((row) => (
+                    <tr
+                      key={row.id}
+                      className="border-t border-slate-200 bg-white dark:border-white/5 dark:bg-transparent"
+                    >
+                      <td className="px-3 py-2">{row.student}</td>
+                      <td className="px-3 py-2">{row.reward}</td>
+                      <td className="px-3 py-2">{row.coins}</td>
+                      <td className="px-3 py-2">{row.date}</td>
+                      <td className="px-3 py-2 text-right">
+                        {row.status === "Completed" ? (
+                          <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-200">
+                            Completed
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full bg-amber-500/10 px-3 py-1 text-[10px] font-semibold text-amber-600 dark:bg-amber-500/15 dark:text-amber-200">
+                            Pending
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="grid gap-3 text-[11px] md:hidden">
+            {RECENT_REDEMPTIONS.map((row) => (
+              <div
+                key={row.id}
+                className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-white/10 dark:bg-white/5"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                      {row.student}
+                    </p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300">
+                      {row.reward}
+                    </p>
+                  </div>
+                  <span
+                    className={
+                      row.status === "Completed"
+                        ? "rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-200"
+                        : "rounded-full bg-amber-500/10 px-2 py-1 text-[10px] font-semibold text-amber-700 dark:bg-amber-500/15 dark:text-amber-200"
+                    }
+                  >
+                    {row.status}
+                  </span>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-slate-600 dark:text-slate-300">
+                  <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] text-slate-700 dark:bg-white/10 dark:text-slate-200">
+                    {row.coins} coins
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] text-slate-700 dark:bg-white/10 dark:text-slate-200">
+                    {row.date}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="mt-3 flex items-center justify-end text-[11px] text-slate-500 dark:text-slate-400">

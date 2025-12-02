@@ -1,17 +1,20 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import { Globe2, MessageCircle, Linkedin, Youtube } from "lucide-react";
 
 export const AdminLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main column */}
       <div className="flex min-h-screen flex-1 flex-col">
-        <Header />
+        <Header onMenuClick={() => setSidebarOpen(true)} />
 
         {/* Page content */}
         <main className="flex-1 overflow-y-auto bg-surface-lightMuted px-6 py-6 text-slate-900 dark:bg-surface-dark dark:text-slate-100">

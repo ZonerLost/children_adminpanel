@@ -1,26 +1,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, LogOut, Moon, Sun } from "lucide-react";
+import { Bell, LogOut, Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "../../shared/hooks/useTheme";
 import SearchInput from "../ui/SearchInput";
 import Button from "../ui/Button";
 import IconButton from "../ui/IconButton";
 import Avatar from "../ui/Avatar";
+import lightLogo from "../../assets/icons/lightLogo.png";
+import darkLogo from "../../assets/icons/darkLogo.png";
 
+type HeaderProps = {
+  onMenuClick: () => void;
+};
 
-const Header = () => {
+const Header = ({ onMenuClick }: HeaderProps) => {
   const [search, setSearch] = useState("");
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  // const logoSrc = theme === "dark" ? darkLogo : lightLogo;
+  const logoSrc = theme === "dark" ? darkLogo : lightLogo;
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-surface-light px-6 text-slate-700 dark:border-white/10 dark:bg-[#120322] dark:text-slate-100">
-      {/* brand */}
-     
+    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-surface-light px-4 text-slate-700 dark:border-white/10 dark:bg-[#120322] dark:text-slate-100 md:px-6">
+      {/* brand + menu */}
+      <div className="flex items-center gap-3">
+        <IconButton
+          onClick={onMenuClick}
+          className="border-slate-200 text-slate-700 hover:bg-slate-100 md:hidden dark:border-white/15 dark:text-slate-100 dark:hover:bg-white/10"
+          aria-label="Open sidebar"
+        >
+          <Menu className="h-4 w-4" />
+        </IconButton>
+        <div
+          className="flex items-center gap-2 cursor-pointer select-none"
+          onClick={() => navigate("/admin")}
+        >
+          <img src={logoSrc} alt="Xego Admin" className="h-7 w-auto" />
+          <span className="text-lg font-semibold text-[#20c303] dark:text-[#b76cff]">
+            Admin Dashboard
+          </span>
+        </div>
+      </div>
 
       {/* center search */}
-      <div className="flex flex-1 justify-center px-4">
+      <div className="hidden flex-1 justify-center px-4 md:flex">
         <div className="w-full max-w-md">
           <SearchInput
             value={search}
@@ -31,7 +53,7 @@ const Header = () => {
       </div>
 
       {/* right controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <IconButton onClick={toggleTheme}>
           {theme === "dark" ? (
             <Sun className="h-4 w-4" />
@@ -40,11 +62,16 @@ const Header = () => {
           )}
         </IconButton>
 
-        <IconButton>
+        <IconButton className="hidden sm:inline-flex">
           <Bell className="h-4 w-4" />
         </IconButton>
 
-        <Button variant="secondary" pill onClick={() => navigate("/login")}>
+        <Button
+          variant="secondary"
+          pill
+          onClick={() => navigate("/login")}
+          className="hidden sm:inline-flex"
+        >
           Logout
           <LogOut className="ml-2 h-4 w-4" />
         </Button>

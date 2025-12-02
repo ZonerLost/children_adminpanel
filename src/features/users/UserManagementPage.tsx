@@ -5,6 +5,7 @@ import SearchInput from "../../components/ui/SearchInput";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import AddUserModal from "./components/AddUserModal";
 import UserTable from "./components/UserTable";
+import { classNames } from "../../shared/utils/classNames";
 import type { CreateUserInput, User } from "./types";
 
 // initial mock data (same as before)
@@ -115,7 +116,7 @@ const UserManagementPage = () => {
     <section className="space-y-6">
       {/* Page header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 sm:text-3xl">
           User &amp; Role Management
         </h1>
         <p className="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
@@ -125,8 +126,8 @@ const UserManagementPage = () => {
       </div>
 
       {/* Search + actions row */}
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="w-full md:max-w-md">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="w-full lg:max-w-md">
           <SearchInput
             value={search}
             onChange={setSearch}
@@ -134,7 +135,7 @@ const UserManagementPage = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Button
             pill
             className="flex items-center gap-2"
@@ -146,7 +147,7 @@ const UserManagementPage = () => {
           <Button
             variant="secondary"
             pill
-            className="flex items-center gap-2 text-xs !bg-[#fc6a03] !hover:bg-[#e65a00] !text-white dark:!bg-[#3e3d3b] "
+            className="flex items-center gap-2 text-xs !bg-[#fc6a03] !hover:bg-[#e65a00] !text-white dark:!bg-[#3e3d3b]"
           >
             <Upload className="h-4 w-4" />
             Bulk Import
@@ -154,7 +155,7 @@ const UserManagementPage = () => {
           <Button
             variant="secondary"
             pill
-            className="flex items-center gap-2 text-xs !bg-[#fc6a03] !hover:bg-[#e65a00] !text-white dark:!bg-[#3e3d3b] "
+            className="flex items-center gap-2 text-xs !bg-[#fc6a03] !hover:bg-[#e65a00] !text-white dark:!bg-[#3e3d3b]"
           >
             <Download className="h-4 w-4" />
             Export Users
@@ -162,8 +163,64 @@ const UserManagementPage = () => {
         </div>
       </div>
 
-      {/* Users table */}
-      <UserTable users={filteredUsers} onDelete={handleDeleteUser} />
+      {/* Users table / cards */}
+      <div className="hidden md:block">
+        <UserTable users={filteredUsers} onDelete={handleDeleteUser} />
+      </div>
+
+      {/* Mobile & tablet cards */}
+      <div className="grid gap-3 md:hidden">
+        {filteredUsers.map((user) => (
+          <div
+            key={user.id}
+            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-surface-darkElevated"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                  {user.name}
+                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {user.email}
+                </p>
+              </div>
+              <button
+                className="rounded-full bg-rose-500/10 px-2 py-1 text-[11px] font-medium text-rose-700 dark:text-rose-200"
+                onClick={() => handleDeleteUser(user)}
+              >
+                Delete
+              </button>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-slate-600 dark:text-slate-300">
+              <span className="rounded-full bg-purple-500/10 px-2 py-1 text-purple-700 dark:text-purple-200">
+                {user.role}
+              </span>
+              <span
+                className={classNames(
+                  "rounded-full px-2 py-1",
+                  user.status === "Active" &&
+                    "bg-emerald-500/10 text-emerald-700 dark:text-emerald-200",
+                  user.status === "Pending" &&
+                    "bg-amber-500/10 text-amber-700 dark:text-amber-200",
+                  user.status === "Inactive" &&
+                    "bg-rose-500/10 text-rose-700 dark:text-rose-200"
+                )}
+              >
+                {user.status}
+              </span>
+              <span className="rounded-full bg-slate-100 px-2 py-1 text-slate-700 dark:bg-white/10 dark:text-slate-200">
+                Last active: {user.lastActivity}
+              </span>
+            </div>
+          </div>
+        ))}
+
+        {filteredUsers.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-6 text-center text-sm text-slate-500 dark:border-white/10 dark:bg-surface-darkElevated dark:text-slate-300">
+            No users found.
+          </div>
+        )}
+      </div>
 
       {/* Modals */}
       <AddUserModal
